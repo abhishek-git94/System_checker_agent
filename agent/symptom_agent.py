@@ -24,7 +24,7 @@ def get_agent_response(user_input: str):
         conditions = ["fever", "headache", "cold", "cough", "burn", "cut", "choking", "stomach pain", "diarrhea", "vomiting", "sprain", "toothache"]
         for cond in conditions:
             if cond in user_input_lower:
-                return get_first_aid(cond)
+                return get_first_aid(cond, "english" if user_input.isascii() else "hinglish")
         return "For which condition do you need first aid? I can help with: fever, headache, cold, cough, burn, cut, choking, stomach pain, diarrhea, vomiting, sprain, toothache"
     
     try:

@@ -160,13 +160,19 @@ FIRST_AID_GUIDES = {
     }
 }
 
-def get_first_aid(condition: str) -> str:
+def get_first_aid(condition: str, lang: str = "english") -> str:
     condition = condition.lower()
     
     for key in FIRST_AID_GUIDES:
         if key in condition:
             guide = FIRST_AID_GUIDES[key]
-            result = f"🚑 **{guide['title']}**\n\n"
+            
+            if lang == "english":
+                title = guide["title"].split("(")[0].strip()
+            else:
+                title = guide["title"]
+            
+            result = f"🚑 **{title}**\n\n"
             result += "**Steps:**\n"
             for i, step in enumerate(guide["steps"], 1):
                 result += f"{i}. {step}\n"
