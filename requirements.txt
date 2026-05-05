@@ -1,1 +1,13 @@
-.
+streamlit
+groq
+langchain-groq
+langgraph
+langchain
+langchain-community
+googlemaps
+speechrecognition
+faster-whisper
+twilio
+flask
+pyttsx3
+python-dotenv
