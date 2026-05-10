@@ -1,16 +1,19 @@
 # agent/symptom_agent.py
 import os
+
 from dotenv import load_dotenv
 from groq import Groq
 from agent.prompts import SYSTEM_PROMPT
 from features.medicine_reminder import add_medicine, get_todays_schedule, format_medicine_list, remove_medicine
 from features.first_aid import get_first_aid
+from utils.storage import init_db, save_symptom
+from utils.disclaimer import get_severity_message
 
 load_dotenv()
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-def get_agent_response(user_input: str):
+def get_agent_response(user_input: str, user_id: str = "default_user"):
     user_input_lower = user_input.lower()
     
     if "medicine" in user_input_lower and ("add" in user_input_lower or "schedule" in user_input_lower):
@@ -39,7 +42,13 @@ def get_agent_response(user_input: str):
             temperature=0.1
         )
         
-        return response.choices[0].message.content
+        response_text = response.choices[0].message.content
+        
+        init_db()
+        severity = get_severity_message("low")
+        save_symptom(user_id, user_input, severity, response_text)
+        
+        return response_text
         
     except Exception as e:
         return f"Error: {str(e)}"
